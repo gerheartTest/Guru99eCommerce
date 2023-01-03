@@ -3,6 +3,7 @@ package End2EndProjects.Test;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,14 +24,15 @@ public class BaseTest {
 	
 	String url = "http://live.techpanda.org/index.php/";
 	
-	String EXPECT_HOMETITLE = "Home page";
-	String EXPECT_MOBILETITLE = "Mobile";
+	String EXPECT_HOMETITLE = "THIS IS DEMO SITE FOR";
+	String EXPECT_MOBILETITLE = "MOBILE";
 	
 	public WebDriver initializeDriver()
 	{
 		WebDriverManager.firefoxdriver().setup();
 		WebDriver driver = new FirefoxDriver();
 		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
 		
 		return driver;
 	}

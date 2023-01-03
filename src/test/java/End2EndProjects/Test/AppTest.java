@@ -17,27 +17,36 @@ public class AppTest extends BaseTest
     public void mobileTest()
     {
     	// Verify Title of the page
-    	Assert.assertEquals(driver.getTitle(), EXPECT_HOMETITLE);
+    	String actual_homeTitle = driver.findElement(By.cssSelector(".page-title h2")).getText();
+    	Assert.assertTrue(actual_homeTitle.contains(EXPECT_HOMETITLE));
     	
     	//Click on 'MOBILE' menu
     	driver.findElement(By.linkText("MOBILE")).click();
     	
     	//Verify Title of the page
-    	Assert.assertEquals(driver.getTitle(), EXPECT_MOBILETITLE);
+    	String actual_mobileTitle = driver.findElement(By.cssSelector(".page-title h1")).getText();
+    	Assert.assertEquals(actual_mobileTitle, EXPECT_MOBILETITLE);
     	
     	//In the list of all mobile, select 'SORT BY' dropdown as 'name'
     	Select ddlSortBy = new Select(driver.findElement(By.xpath("//select[@title='Sort By']")));
     	ddlSortBy.selectByVisibleText("Name");
     	
     	//Verify all products are sorted by name
-    	List<WebElement> ele_prodName= driver.findElements(By.xpath("//h2[@class='product-name']"));
-    	List<String> actual_itemList = ele_prodName.stream().map(s->s.getText()).toList();
-    	System.out.println(actual_itemList);
+    	List<WebElement> ele_mobileProducts = driver.findElements(By.cssSelector(".products-grid .item.last"));
+    	List<String> actual_itemList = ele_mobileProducts.stream().map(s->s.findElement(By.cssSelector(".product-name")).getText()).toList();
     	List<String> expect_itemList = actual_itemList.stream().sorted().collect(Collectors.toList());
-    	System.out.println(expect_itemList);
     	
     	Assert.assertEquals(actual_itemList, expect_itemList);
     	
+    	//Get Cost of Sony Xperia mobile
+    	WebElement ele_sony = ele_mobileProducts.stream().filter(s->s.findElement(By.cssSelector(".product-name")).getText().contains("SONY XPERIA")).findFirst().orElse(null);
+    	String sonyPriceInList = ele_sony.findElement(By.cssSelector(".price")).getText();
     	
+    	//Click on Sony Xperia mobile
+    	ele_sony.findElement(By.cssSelector(".product-name")).click();
+    	
+    	//Compare Cost from Mobile list Page to Product Details Page
+    	String sonyPriceInDetails = driver.findElement(By.cssSelector(".price")).getText();
+    	Assert.assertEquals(sonyPriceInList, sonyPriceInDetails);
     }
 }
