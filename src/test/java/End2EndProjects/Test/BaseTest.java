@@ -4,12 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
@@ -21,11 +23,17 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 public class BaseTest {
 
 	public WebDriver driver;
+	public WebDriverWait eWait;
 	
 	String url = "http://live.techpanda.org/index.php/";
 	
 	String EXPECT_HOMETITLE = "THIS IS DEMO SITE FOR";
 	String EXPECT_MOBILETITLE = "MOBILE";
+	
+	String EXPECT_ERRORMESSAGE = "Some of the products cannot be ordered in requested quantity.";
+	String EXPECT_NOITEMMSG = "SHOPPING CART IS EMPTY";
+	
+	List<String> EXPECT_LSTPRODUCTS=new ArrayList<String>();   
 	
 	public WebDriver initializeDriver()
 	{
@@ -33,6 +41,8 @@ public class BaseTest {
 		WebDriver driver = new FirefoxDriver();
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
+		
+		eWait = new WebDriverWait(driver, Duration.ofSeconds(3)); 
 		
 		return driver;
 	}

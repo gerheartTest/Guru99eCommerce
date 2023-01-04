@@ -5,7 +5,7 @@
     <classes>
       <class name="End2EndProjects.Test.AppTest">
         <methods>
-          <include name="mobileTest"/>
+          <include name="TestCase4"/>
           <include name="tearDown"/>
           <include name="launchApplication"/>
         </methods>
